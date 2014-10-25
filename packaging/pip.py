@@ -110,7 +110,7 @@ EXAMPLES = '''
 # Install (Bottle) python package on version 0.11.
 - pip: name=bottle version=0.11
 
-# Install (MyApp) using one of the remote protocols (bzr+,hg+,git+,svn+). You do not have to supply '-e' option in extra_args.
+# Install (MyApp) using one of the remote protocols (bzr+,hg+,git+,svn+).
 - pip: name='svn+http://myrepo/svn/MyApp#egg=MyApp'
 
 # Install (Bottle) into the specified (virtualenv), inheriting none of the globally installed modules
@@ -288,19 +288,6 @@ def main():
     path_prefix = None
     if env:
         path_prefix="/".join(pip.split('/')[:-1])
-
-    # Automatically apply -e option to extra_args when source is a VCS url. VCS
-    # includes those beginning with svn+, git+, hg+ or bzr+
-    if name:
-        if name.startswith('svn+') or name.startswith('git+') or \
-                name.startswith('hg+') or name.startswith('bzr+'):
-            args_list = []  # used if extra_args is not used at all
-            if extra_args:
-                args_list = extra_args.split(' ')
-            if '-e' not in args_list:
-                args_list.append('-e')
-                # Ok, we will reconstruct the option string
-                extra_args = ' '.join(args_list)
 
     if extra_args:
         cmd += ' %s' % extra_args
